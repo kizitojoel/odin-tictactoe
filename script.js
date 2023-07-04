@@ -21,6 +21,10 @@ const gameboard = (() => {
         render(array);
     };
 
+    // Add functionality for game restart using button
+    const restart = document.getElementById('restart');
+    restart.addEventListener('click', reset);
+
     const render = (inputArray) => {
         const grid = document.getElementById("grid");
         for (let i = 0; i < 3; i++)
@@ -113,6 +117,7 @@ function playerFactory(character){
 
 monitorGameboard = (() => {
     const sections = document.getElementsByClassName("grid-row");
+    const audio = new Audio("pencil_check_mark.wav");
 
     function _printCharacter(e){
         var target = e.target;
@@ -127,6 +132,7 @@ monitorGameboard = (() => {
         if (!gameboard.checkWinner() && !gameboard.checkDraw() && gameboard.array[i][j] !== 'X' && gameboard.array[i][j] !== 'O')
         {
             gameboard.array[i][j] = displayController.turn;
+            audio.play();
             gameboard.render(gameboard.array);
             displayController.turn = displayController.toggleTurn(displayController.turn);
         }
