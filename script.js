@@ -1,3 +1,5 @@
+const modal = document.getElementsByClassName("modal")[0];
+const overlay = document.getElementsByClassName("overlay")[0];
 /**
  * The gameboard module is an IIFE that returns an object that contains a 2d array representing the gameboard
  */
@@ -11,6 +13,8 @@ const gameboard = (() => {
     const reset = () => {
         displayController.turn = 'X';
         console.clear();
+        modal.classList.remove("active")
+        overlay.classList.remove("overlay-visible")
         for (let i = 0; i < 3; i++)
         {
             for (let j = 0; j < 3; j++)
@@ -20,7 +24,6 @@ const gameboard = (() => {
         }
         render(array);
     };
-
     // Add functionality for game restart using button
     const restart = document.getElementById('restart');
     restart.addEventListener('click', reset);
@@ -93,31 +96,62 @@ const gameboard = (() => {
     };
 })();
 
+function playerFactory(character){
+    const _char = character;
+    const playerName = `Player ${_char}`;
+
+    const getChar = () => _char;
+    return {
+        getChar,
+        playerName
+    }
+}
+
 const displayController = (() => {
     var turn = 'X';
+    playerX = playerFactory('X');
+    playerO = playerFactory('O');
+
+    const editPlayerName = (event) => {
+        let target = event.target;
+        let playerName = `player${target.parentElement.getAttribute('data-char')}`;
+        if (playerName === "playerX"){
+            playerX.playerName = target.textContent;
+        }
+        console.log(playerX.playerName);
+    }
+
+    const playerNames = document.getElementsByClassName("player-name");
+
+    Array.from(playerNames).forEach(player => {
+        player.addEventListener('blur', editPlayerName);
+    });
     /**
      * The display controller function controls the flow of the game and determines who can play
      * @param {string} turn This takes in the character that just played
      * @returns The character that needs to play next
      */
     const toggleTurn = (currentTurn) => currentTurn === 'X' ? 'O' : 'X';
+
+    const displayWinner = (winner) => {
+        modal.classList.add("active");
+        overlay.classList.add("overlay-visible")
+
+        console.log(`${winner} is the winner and I should display them in the modal`);
+        modal.textContent = `${winner} is the winner`;
+
+    }
     return {
         turn, 
-        toggleTurn
+        toggleTurn,
+        displayWinner
     };
 })();
-
-function playerFactory(character){
-    const _char = character;
-    const getChar = () => _char;
-    return {
-        getChar
-    }
-}
 
 monitorGameboard = (() => {
     const sections = document.getElementsByClassName("grid-row");
     const audio = new Audio("pencil_check_mark.wav");
+    
 
     function _printCharacter(e){
         var target = e.target;
@@ -139,8 +173,10 @@ monitorGameboard = (() => {
         let winner = null;
         if (winner = gameboard.checkWinner())
         {
-            console.log(`Winner is ${winner}`);
+            // displayController.displayWinner(winner);
+            displayController.displayWinner(winner);
             const timeout = setTimeout(gameboard.reset, 3000);
+            console.log(`Winner is ${winner}`);
         }
         if (gameboard.checkDraw())
         {
@@ -157,6 +193,3 @@ monitorGameboard = (() => {
         }
     }
 })();
-
-
-

@@ -10,6 +10,17 @@
 <body>
     <div class="container">
         <h1>Tic-Tac-Toe</h1>
+        <div id="players">
+            <div class="player-section" data-char="X">
+                <h1 class="player-name" contenteditable="true">Player 1</h1>
+                <p>X</p>
+            </div>
+            <button id="restart">Restart</button>
+            <div class="player-section" data-char="O">
+                <h1 class="player-name" contenteditable="true">Player 2</h1>
+                <p>O</p>
+            </div>
+        </div>
         <div id="grid">
             <div class="grid-row" data-row="0">
                 <div class="grid-item" data-col="0"></div>
@@ -27,8 +38,9 @@
                 <div class="grid-item" data-col="2"></div>
             </div>
         </div>
-        <button id="restart">Restart</button>
     </div>
+    <div class="overlay"></div>
+    <div class="modal">This is my modal</div>
     <script src="script.js"></script>
 </body>
 </html>
