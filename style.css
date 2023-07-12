@@ -110,3 +110,20 @@
     display: block;
     transition: ease-in-out 0.4ms;
 }
+
+@media screen and (max-width: 400px) {
+    #players
+    {
+        flex-direction: column;
+        height: 40%;
+    }
+    .player-section, #restart
+    {
+        width: 100%;
+    }
+    #grid
+    {
+        width: 96%;
+        aspect-ratio: 1 / 1;
+    }
+}

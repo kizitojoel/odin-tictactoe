@@ -1,5 +1,8 @@
 const modal = document.getElementsByClassName("modal")[0];
 const overlay = document.getElementsByClassName("overlay")[0];
+const footerDate = document.getElementById("date");
+let currentDate = new Date();
+footerDate.textContent = currentDate.getFullYear();
 /**
  * The gameboard module is an IIFE that returns an object that contains a 2d array representing the gameboard
  */
