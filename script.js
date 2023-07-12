@@ -135,16 +135,22 @@ const displayController = (() => {
 
     const displayWinner = (winner) => {
         modal.classList.add("active");
-        overlay.classList.add("overlay-visible")
+        overlay.classList.add("overlay-visible");
 
-        console.log(`${winner} is the winner and I should display them in the modal`);
-        modal.textContent = `${winner} is the winner`;
+        let getPlayerName = (character) => 'X' ? playerX.playerName : playerO.playerName;
+        modal.textContent = `${getPlayerName(winner)} is the winner`;
+    }
+    const displayDraw = () => {
+        modal.classList.add("active");
+        overlay.classList.add("overlay-visible");
 
+        modal.textContent = `Draw`
     }
     return {
         turn, 
         toggleTurn,
-        displayWinner
+        displayWinner,
+        displayDraw
     };
 })();
 
@@ -175,13 +181,13 @@ monitorGameboard = (() => {
         {
             // displayController.displayWinner(winner);
             displayController.displayWinner(winner);
-            const timeout = setTimeout(gameboard.reset, 3000);
+            const timeout = setTimeout(gameboard.reset, 2000);
             console.log(`Winner is ${winner}`);
         }
         if (gameboard.checkDraw())
         {
-            console.log('This is a draw');
-            const timeout = setTimeout(gameboard.reset, 3000)
+            displayController.displayDraw();
+            const timeout = setTimeout(gameboard.reset, 2000)
         }
     }
 
